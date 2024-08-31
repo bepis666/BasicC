@@ -3,9 +3,27 @@
 int f(char c, int i);
 int f(char c, int i)
 {
-    if ((c==40) && (i==0)) return 1;
-    else if ((c==41) && (i==1)) return 1;
-    else return 0;    
+    static int opened = 0, closed = 0, yes = 0;
+
+    if ((i>0) && (yes>0)) 
+    {
+        if (c==40) opened++;
+        else if (c==40) opened++;
+        else if (c==41) closed++;
+
+        if ((opened==closed) && (yes>0)) yes = 2;
+        else yes = 1;
+    }
+    else
+    {
+        if ((c==40) && (i==0)) // Если символ "(" первый
+        {
+            opened++;
+            yes = 1; 
+        }
+    }
+    
+    return yes;
 }
 
 
@@ -19,11 +37,10 @@ int main()
         scanf("%c", &c);
         if (c==46) continue;
         yes = f(c,i);
-        printf("%d\n", c);
         i = 1;
     }
     
-    if (yes==1) printf("YES");
+    if (yes==2) printf("YES");
     else printf("NO");
 
     return 0;
